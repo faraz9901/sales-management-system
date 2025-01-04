@@ -47,7 +47,6 @@ export async function loginUser(req, res) {
         res.cookie('Token', token, {
             httpOnly: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
-            sameSite: "strict"
         });
 
         res.status(202).json({
