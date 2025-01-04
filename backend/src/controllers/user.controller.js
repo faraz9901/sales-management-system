@@ -44,15 +44,12 @@ export async function loginUser(req, res) {
 
         const token = jwt.sign({ id: user._id, role: user.role }, env.JWT_SECRET, { expiresIn: '7d' });
 
-        res.cookie('Token', token, {
-            httpOnly: true,
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        });
 
         res.status(202).json({
             success: true,
             message: "User Logged In",
-            content: user
+            content: user,
+            token
         })
 
     } catch (error) {

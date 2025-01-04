@@ -7,6 +7,7 @@ export const useAuth = create((set) => {
         try {
             const { data } = await request.post("/users/login", { email, password })
             set({ user: data.content })
+            localStorage.setItem("token", data.token)
             return { data: data.content, error: null }
         } catch (error) {
             set({ user: null })

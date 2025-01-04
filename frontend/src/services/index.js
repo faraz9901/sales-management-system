@@ -3,6 +3,7 @@ import axios from 'axios'
 export const request = axios.create({
     baseURL: "https://sales-management-system-server.onrender.com/api/v1/",
     headers: {
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
         'Content-Type': 'application/json',
     },
     withCredentials: true
