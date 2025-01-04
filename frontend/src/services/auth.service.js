@@ -22,6 +22,7 @@ export const useAuth = create((set) => {
         } catch (error) {
             set({ user: null })
         } finally {
+            localStorage.removeItem("token")
             localStorage.removeItem("isAuthenticated")
         }
     }
