@@ -1,6 +1,5 @@
 # sales-management-system
 
-# sales-management-system
 
     
     To start the application, follow these steps:
