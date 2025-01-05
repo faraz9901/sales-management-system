@@ -192,6 +192,12 @@ export const getRecord = async (req, res) => {
 
 
 export const getStats = async (req, res) => {
+
+    const month = req.query.month || new Date().getMonth()
+
+    const startDate = new Date(new Date().getFullYear(), month, 1)
+    const endDate = new Date(new Date().getFullYear(), month + 1, 0)
+
     try {
         const stats = await Sales.aggregate([
             {
@@ -236,12 +242,12 @@ export const getStats = async (req, res) => {
                             }
                         }
                     ],
-                    salesThisCurrentMonth: [
+                    totalSales: [
                         {
                             $match: {
                                 date: {
-                                    $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-                                    $lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+                                    $gte: startDate,
+                                    $lt: endDate
                                 }
                             }
                         },
@@ -257,7 +263,7 @@ export const getStats = async (req, res) => {
             }
         ]);
 
-        res.status(200).json({ success: true, content: { mostSold: stats[0].mostSold[0], mostExpensive: stats[0].mostExpensive[0], salesThisCurrentMonth: stats[0].salesThisCurrentMonth[0] } })
+        res.status(200).json({ success: true, content: { mostSold: stats[0].mostSold[0], mostExpensive: stats[0].mostExpensive[0], totalSales: stats[0].totalSales[0] } })
     } catch (error) {
         res.status(500).json({ success: false })
     }

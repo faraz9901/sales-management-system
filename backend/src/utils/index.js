@@ -54,7 +54,7 @@ export const recordHeaders = [
 
 export const logHeaders = [
     { header: "Date", key: "date", width: 50 },
-    { header: "Action", key: "message", width: 50 },
+    { header: "Action", key: "message", width: 150 },
 ]
 
 

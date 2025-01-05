@@ -41,7 +41,7 @@ export default function DashBoard() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await salesService.getStats()
+                const response = await salesService.getStats(month)
                 setStats(response?.data?.content)
             } catch (error) {
 
@@ -49,7 +49,7 @@ export default function DashBoard() {
         }
 
         fetchStats()
-    }, [])
+    }, [month])
 
     return (
         <div className=' flex flex-col bg-white  gap-3 py-3 px-2 '>
@@ -74,13 +74,15 @@ export default function DashBoard() {
                 </div>
             </div>
 
+            <p className='text-gray-500'> Total Sales of {months[month]} - {new Date().getFullYear()}</p>
+
             <div className='flex flex-wrap lg:flex-nowrap items-center gap-5 py-2'>
 
                 <Card title={"Most Sold Product"} secondLine={stats?.mostSold?.product} thirdLine={formatToCurrencySystem(stats?.mostSold?.totalQuantity || 0) + " Units Sold"} color="bg-orange-300" />
 
                 <Card title={"Most Expensive Product"} thirdLine={"Rs. " + formatToCurrencySystem(stats?.mostExpensive?.maxPrice || 0)} secondLine={stats?.mostExpensive?.product} color="bg-red-300" />
 
-                <Card title={"Total Sales of the Month"} thirdLine={formatToCurrencySystem(stats?.salesThisCurrentMonth?.unitsSold || 0) + " Units Sold"} secondLine={"Rs. " + formatToCurrencySystem(stats?.salesThisCurrentMonth?.totalRevenue || 0)} color="bg-blue-300" />
+                <Card title={"Total Sales of the Month"} thirdLine={formatToCurrencySystem(stats?.totalSales?.unitsSold || 0) + " Units Sold"} secondLine={"Rs. " + formatToCurrencySystem(stats?.totalSales?.totalRevenue || 0)} color="bg-blue-300" />
 
             </div>
         </div>

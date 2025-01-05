@@ -39,8 +39,8 @@ class SalesService {
         return request.delete(`/sales/${id}`)
     }
 
-    async getStats() {
-        return request.get('/sales/most-sales')
+    async getStats(month) {
+        return request.get('/sales/most-sales', { params: { month } })
     }
 
     async downLoadRecords(month) {
