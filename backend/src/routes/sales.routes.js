@@ -16,6 +16,8 @@ router.get('/', getSalesRecords)
 
 router.get("/most-sales", getStats)
 
+router.get("/download/:month", verifyRoles(["admin"]), downLoadRecords)
+
 router.get("/logs", verifyRoles(["admin"]), sendLogs)
 
 router.get('/invoice/:invoiceNumber', verifyRoles(["admin"]), sendInvoice)

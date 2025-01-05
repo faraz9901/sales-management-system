@@ -14,6 +14,7 @@ export default function AddSales() {
             toast.onSuccess("Sales Record Added", 2000)
             navigate('/')
         } catch (error) {
+
             toast.onError(error, 5000)
         }
     }

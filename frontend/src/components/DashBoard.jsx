@@ -6,7 +6,7 @@ import { Logs } from 'lucide-react'
 
 const Card = ({ title, secondLine, thirdLine, color = "bg-base-100" }) => {
     return (
-        <div className={"rounded-lg py-4 w-60 h-30 shadow-md flex flex-col justify-between  text-center " + color}>
+        <div className={"rounded-lg py-4 w-60 h-[115px] shadow-md flex flex-col justify-between  text-center " + color}>
             <h2 className="font-bold text-xl">{title}</h2>
             <p className='font-semibold text-lg'>{secondLine}</p>
             <p className='text-gray-600 '>{thirdLine}</p>
@@ -61,7 +61,7 @@ export default function DashBoard() {
 
                 <Card title={"Most Expensive Product"} thirdLine={"Rs. " + formatToCurrencySystem(stats?.mostExpensive?.maxPrice || 0)} secondLine={stats?.mostExpensive?.product} color="bg-red-300" />
 
-                <Card title={"Sales this Month"} thirdLine={formatToCurrencySystem(stats?.salesThisCurrentMonth?.unitsSold || 0) + " Units Sold"} secondLine={"Rs. " + formatToCurrencySystem(stats?.salesThisCurrentMonth?.totalRevenue || 0)} color="bg-blue-300" />
+                <Card title={"Total Sales of the Month"} thirdLine={formatToCurrencySystem(stats?.salesThisCurrentMonth?.unitsSold || 0) + " Units Sold"} secondLine={"Rs. " + formatToCurrencySystem(stats?.salesThisCurrentMonth?.totalRevenue || 0)} color="bg-blue-300" />
 
             </div>
         </div>

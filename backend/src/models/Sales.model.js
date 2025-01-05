@@ -8,6 +8,6 @@ const salesSchema = new mongoose.Schema({
     category: { type: String, required: true },
     date: { type: Date, required: true },
     invoiceNumber: { type: Number, required: true },
-});
+}, { timestamps: true });
 
 export const Sales = mongoose.model('Sales', salesSchema);

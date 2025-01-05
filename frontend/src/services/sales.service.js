@@ -16,11 +16,19 @@ class SalesService {
     }
 
     async getRecords(query) {
-        return request.get('/sales', { params: query })
+        return request.get('/sales', { params: { search: query } })
     }
 
     async updateRecord(id, data) {
-        return request.patch(`/sales/${id}`, data)
+
+        const selectedKeys = Object.keys(data).filter(key => initialSalesFormValues.hasOwnProperty(key))
+
+        const selectedData = selectedKeys.reduce((obj, key) => {
+            obj[key] = data[key]
+            return obj
+        }, {})
+
+        return request.patch(`/sales/${id}`, selectedData)
     }
 
     async getRecord(id) {
@@ -33,6 +41,10 @@ class SalesService {
 
     async getStats() {
         return request.get('/sales/most-sales')
+    }
+
+    async downLoadRecords(month) {
+        return request.get('/sales/download', { params: { month } }, { responseType: 'blob' })
     }
 
     async downloadInvoice(number) {

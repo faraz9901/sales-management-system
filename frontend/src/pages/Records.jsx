@@ -1,6 +1,7 @@
 import { EllipsisVertical } from "lucide-react";
 import { Link } from "react-router-dom";
 import DashBoard from "../components/DashBoard";
+import RecordsTable from "../components/RecordsTable";
 
 export default function Records() {
     return (
@@ -24,10 +25,7 @@ export default function Records() {
             <DashBoard />
 
             {/* Records Table */}
-            <div>
-
-            </div>
-
+            <RecordsTable />
 
         </div >
     )

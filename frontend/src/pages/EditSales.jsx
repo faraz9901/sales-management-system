@@ -33,8 +33,7 @@ export default function EditSales() {
 
     const updateSales = async (data) => {
         try {
-            const { _id, __v, ...updateRecord } = data
-            await salesService.updateRecord(_id, updateRecord)
+            await salesService.updateRecord(data._id, data)
             toast.onSuccess("Sales Record Updated", 2000)
             navigate('/')
         } catch (error) {

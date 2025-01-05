@@ -8,12 +8,12 @@ import NotFound from './NotFound'
 import Records from './Records'
 
 const navClass = (isActive) => {
-    return "rounded p-3 flex gap-3 " + (isActive ? "bg-white  text-black font-semibold" : " text-white")
+    return "rounded p-3 flex items-center gap-3 " + (isActive ? "bg-white  text-black font-semibold" : " text-white")
 }
 
 export default function MainLayout() {
     return (
-        <div className="drawer lg:drawer-open">
+        <div className="drawer lg:drawer-open  text-sm">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content bg-slate-200">
                 {/* drawer button */}

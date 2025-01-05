@@ -87,21 +87,33 @@ export const sendLogs = async (req, res) => {    // Download the log file
 
 }
 
+export const downLoadRecords = async (req, res) => {
+    try {
+        const month = req.params.month
+
+        const sales = await Sales.find({ date: { $gte: new Date(new Date().getFullYear(), month, 1), $lt: new Date(new Date().getFullYear(), month + 1, 1) } })
+
+        res.status(200).json({ success: true, content: sales })
+
+    } catch (error) {
+        res.status(500).json({ success: false })
+    }
+}
+
 export const getSalesRecords = async (req, res) => {
     try {
-        const userQuery = req.query
         const query = {}
 
-        if (userQuery.product) {
-            query.product = new RegExp(userQuery.product, "i")
+        const userQuery = req?.query?.search
+
+        const regex = new RegExp(userQuery, "i")
+
+
+        if (userQuery) {
+            query.$or = [{ customerName: regex }, { product: regex }, { category: regex }]
         }
 
-        if (userQuery.category) {
-            query.category = userQuery.category
-        }
-
-
-        const sales = await Sales.find(query)
+        const sales = await Sales.find(query).sort({ createdAt: -1 })
 
         res.status(200).json({ success: true, content: sales })
 
