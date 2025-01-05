@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import salesService from '../services/sales.service'
 import { formatToCurrencySystem, months } from '../services'
+import { Logs } from 'lucide-react'
 
 
 const Card = ({ title, secondLine, thirdLine, color = "bg-base-100" }) => {
@@ -32,22 +33,29 @@ export default function DashBoard() {
     }, [])
 
     return (
-        <div className='  bg-white  gap-10 py-3 '>
-            <div className='flex justify-between'>
-                <select value={month} onChange={(e) => setMonth(e.target.value)} className="select focus:outline-none w-full max-w-xs">
+        <div className=' flex flex-col bg-white  gap-3 py-3 px-2 '>
+            <div className='flex justify-between pe-5 '>
+
+                <select value={month} onChange={(e) => setMonth(e.target.value)} className="select select-bordered focus:outline-none w-full max-w-xs">
                     {months.map((month, index) => (<option key={index} value={index}>{month}</option>))}
                 </select>
 
 
-                <div>
+                <div className='flex items-center gap-3'>
 
-                    hi tehre
-                    asdjf
+                    <span className='flex flex-col items-center cursor-pointer '>
+                        <img src='/excel.svg' className=' h-6'></img>
+                        <small className='font-semibold text-gray-500'>Excel Report</small>
+                    </span>
 
+                    <span className='flex flex-col items-center cursor-pointer '>
+                        <Logs className='h-6' />
+                        <small className='font-semibold text-gray-500'>Download Logs</small>
+                    </span>
                 </div>
             </div>
 
-            <div className='flex flex-wrap lg:flex-nowrap items-center gap-5 p-2'>
+            <div className='flex flex-wrap lg:flex-nowrap items-center gap-5 py-2'>
 
                 <Card title={"Most Sold Product"} secondLine={stats?.mostSold?.product} thirdLine={formatToCurrencySystem(stats?.mostSold?.totalQuantity || 0) + " Units Sold"} color="bg-orange-300" />
 

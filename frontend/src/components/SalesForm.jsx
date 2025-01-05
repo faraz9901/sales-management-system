@@ -56,7 +56,7 @@ export default function SalesForm({ onFormValid, initialValues }) {
                 <div>
                     <label className="label">Category</label>
                     <select value={salesFormdata?.category} required name="category" onChange={handleFormChange} className={"select select-bordered w-full" + (formErrors?.category ? " select-error" : "")}>
-                        <option disabled selected>Pick a Category</option>
+                        <option disabled value="">Pick a Category</option>
                         {ProductCategories.map(category => <option key={category} value={category}>{category}</option>)}
                     </select>
                     {formErrors?.category && <span className="text-error text-xs">{formErrors?.category}</span>}

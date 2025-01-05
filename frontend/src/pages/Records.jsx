@@ -21,10 +21,7 @@ export default function Records() {
             </div>
 
             {/* Stats for records */}
-            <div>
-                <DashBoard />
-            </div>
-
+            <DashBoard />
 
             {/* Records Table */}
             <div>
