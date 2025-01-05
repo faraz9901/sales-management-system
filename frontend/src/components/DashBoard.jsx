@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import salesService from '../services/sales.service'
-import { formatToCurrencySystem, months } from '../services'
+import { download, formatToCurrencySystem, months } from '../services'
 import { useToaster } from '../services/toaster.service'
 import { Logs } from 'lucide-react'
 
@@ -23,15 +23,17 @@ export default function DashBoard() {
     const downloadExcel = async () => {
         try {
             const response = await salesService.downLoadRecords(month)
-            const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `${months[month]}.xlsx`;
-            link.click();
-            link.remove()
+            download(response.data, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", `${months[month]}-sales.xlsx`)
         } catch (error) {
-            console.log(error)
+            toast.onError(error, 5000)
+        }
+    }
+
+    const downloadLogs = async () => {
+        try {
+            const response = await salesService.downloadLogs()
+            download(response.data, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "logs.xlsx")
+        } catch (error) {
             toast.onError(error, 5000)
         }
     }
@@ -65,7 +67,7 @@ export default function DashBoard() {
                         <small className='font-semibold text-gray-500'>Excel Report</small>
                     </span>
 
-                    <span className='flex flex-col items-center cursor-pointer '>
+                    <span onClick={downloadLogs} className='flex flex-col items-center cursor-pointer '>
                         <Logs className='h-6' />
                         <small className='font-semibold text-gray-500'>Download Logs</small>
                     </span>

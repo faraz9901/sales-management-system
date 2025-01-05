@@ -1,24 +1,26 @@
 import { Sales } from "../models/Sales.model.js"
 import { salesValidation } from "../utils/validation.js"
 import createPdf from "../utils/createPdf.js"
-import * as url from 'url';
-import * as path from 'path';
-import * as fs from 'fs';
-import { createLog } from "../utils/createLogs.js";
-import { getDateAndTime, recordHeaders } from "../utils/index.js";
+import { getDateAndTime, logHeaders, recordHeaders } from "../utils/index.js";
 import { createExcelFile } from "../utils/createExcelFile.js";
+import { Log } from "../models/Logs.model.js";
 
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-
-const createEditLogs = async (previousData, newData) => {
-    Object.keys(newData).forEach(async (key) => {
-        if (previousData[key] !== newData[key]) {
-            await createLog(` ${getDateAndTime()} - Updated "${key}" from "${previousData[key]}" to "${newData[key]}" of Product ${newData.product} with customer ${newData.customerName} `)
+const createEditLogs = async (previousRecord, newRecord) => {
+    const changedFields = Object.keys(newRecord).filter(key => {
+        // Check if the date has changed
+        if (key === 'date') {
+            return previousRecord[key].toISOString().split('T')[0] !== new Date(newRecord[key]).toISOString().split('T')[0]
         }
+        return previousRecord[key] !== newRecord[key]
     })
+
+    const logMessage = changedFields.map(key => `${key}: ${previousRecord[key]} -> ${newRecord[key]}`).join(' \n')
+
+    if (changedFields.length > 0) {
+        await Log.create({ message: `Updated Sales Record of ${previousRecord.customerName} with product ${previousRecord.product}. Changed fields: \n${logMessage}` })
+    }
 }
 
 
@@ -34,6 +36,10 @@ export const createSalesRecords = async (req, res) => {
         }
 
         await Sales.create(data)
+
+        const message = `Sales Record Created of ${data.customerName} with product ${data.product}`
+
+        await Log.create({ message })
 
         res.status(201).json({ success: true })
 
@@ -61,23 +67,20 @@ export const sendInvoice = async (req, res) => {
 }
 
 export const sendLogs = async (req, res) => {    // Download the log file
-    const filePath = path.join(__dirname, "..", "..", "public", "log.txt");
 
     try {
-        const stat = fs.statSync(filePath);
+        const logs = await Log.find({}).sort({ createdAt: -1 })
 
-        res.writeHead(200, {
-            'Content-Type': 'text/plain',
-            'Content-Length': stat.size,
-            'Content-Disposition': 'attachment; filename="log.txt"'
-        });
-        const readStream = fs.createReadStream(filePath);
-        readStream.pipe(res);
+        const updatedLogs = logs.map((log) => ({
+            message: log.message,
+            date: getDateAndTime(log.createdAt), // Use getDateAndTime function to get the formatted date and time from log.createdAt
+        }))
+
+        await createExcelFile(logHeaders, updatedLogs, "logs", res)
+
     } catch (error) {
-        res.status(500).send('Error downloading file');
-
+        res.status(500).json({ success: false })
     }
-
 }
 
 export const downLoadRecords = async (req, res) => {
@@ -134,10 +137,10 @@ export const updateRecord = async (req, res) => {
         }
 
 
-        createEditLogs(isRecordExist, req.body)
 
         await Sales.findOneAndUpdate({ _id }, req.body)
 
+        await createEditLogs(isRecordExist, req.body)
 
         res.status(200).json({ success: true })
 
@@ -157,7 +160,9 @@ export const deleteRecord = async (req, res) => {
 
         await Sales.findOneAndDelete({ _id })
 
-        createLog(`${getDateAndTime()} -  Deleted record of Product ${isRecordExist.product} with customer ${isRecordExist.customerName} `)
+        const message = `Sales Record Deleted of ${isRecordExist.customerName} with product ${isRecordExist.product}`
+
+        await Log.create({ message })
 
         res.status(200).json({ success: true })
 
@@ -171,6 +176,10 @@ export const getRecord = async (req, res) => {
         const _id = req.params.id
 
         const record = await Sales.findOne({ _id })
+
+        if (!record) {
+            return res.status(404).json({ success: false, message: "Record not found" })
+        }
 
         res.status(200).json({ success: true, content: record })
 

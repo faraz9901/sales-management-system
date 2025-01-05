@@ -5,6 +5,7 @@ import { useToaster } from '../services/toaster.service'
 import salesService from '../services/sales.service'
 import { getDate } from '../services'
 import ConfirmPopup from './ConfirmPopup'
+import { download } from '../services'
 
 export default function RecordsTable() {
     const [search, setSearch] = useState('')
@@ -24,18 +25,12 @@ export default function RecordsTable() {
         }
     }
 
-    const download = (record) => {
+    const downloadInvoice = (record) => {
         return async (e) => {
             e.stopPropagation()
             try {
                 const response = await salesService.downloadInvoice(record.invoiceNumber)
-                const blob = new Blob([response.data], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = record.invoiceNumber + '.pdf';
-                link.click();
-
+                download(response.data, "application/pdf", `${record.customerName}-invoice.pdf`)
             } catch (error) {
                 toast.onError(error, 5000)
             }
@@ -95,7 +90,7 @@ export default function RecordsTable() {
                                     <td>{record.price}</td>
                                     <td>{record.quantity}</td>
                                     <td className='text-center'>
-                                        <button className='btn  btn-sm' onClick={download(record)}><Download size={15} /></button>
+                                        <button className='btn  btn-sm' onClick={downloadInvoice(record)}><Download size={15} /></button>
                                     </td>
                                     <td>
                                         <button
