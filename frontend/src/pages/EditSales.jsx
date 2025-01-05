@@ -42,8 +42,8 @@ export default function EditSales() {
     }
 
     return (
-        <div className='flex justify-center items-center'>
-            <div className='w-full px-5 py-2'>
+        <div className='flex justify-center items-center lg:py-4'>
+            <div className=' lg:w-9/12 w-full  px-5 bg-white rounded-md  py-4'>
                 <h3 className='lg:text-3xl text-2xl text-center font-bold'>Edit Sales</h3>
                 <SalesForm onFormValid={updateSales} initialValues={record} />
             </div>

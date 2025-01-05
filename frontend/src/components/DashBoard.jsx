@@ -7,7 +7,7 @@ import { Logs } from 'lucide-react'
 
 const Card = ({ title, secondLine, thirdLine, color = "bg-base-100" }) => {
     return (
-        <div className={"rounded-lg py-4 w-60 h-[115px] shadow-md flex flex-col justify-between  text-center " + color}>
+        <div className={"rounded-lg py-4 lg:w-60  w-52 lg:h-[115px] h-[130px] shadow-md flex flex-col justify-between  text-center " + color}>
             <h2 className="font-bold text-xl">{title}</h2>
             <p className='font-semibold text-lg'>{secondLine}</p>
             <p className='text-gray-600 '>{thirdLine}</p>
@@ -53,9 +53,9 @@ export default function DashBoard() {
 
     return (
         <div className=' flex flex-col bg-white  gap-3 py-3 px-2 '>
-            <div className='flex justify-between pe-5 '>
+            <div className='flex flex-wrap gap-5 justify-between lg:pe-5 '>
 
-                <select value={month} onChange={(e) => setMonth(e.target.value)} className="select select-bordered focus:outline-none w-full max-w-xs">
+                <select value={month} onChange={(e) => setMonth(e.target.value)} className="select select-bordered focus:outline-none w-full lg:max-w-xs">
                     {months.map((month, index) => (<option key={index} value={index}>{month}</option>))}
                 </select>
 
@@ -76,7 +76,7 @@ export default function DashBoard() {
 
             <p className='text-gray-500'> Total Sales of {months[month]} - {new Date().getFullYear()}</p>
 
-            <div className='flex flex-wrap lg:flex-nowrap items-center gap-5 py-2'>
+            <div className='flex flex-wrap lg:flex-nowrap items-center justify-center lg:justify-start gap-5 py-2'>
 
                 <Card title={"Most Sold Product"} secondLine={stats?.mostSold?.product} thirdLine={formatToCurrencySystem(stats?.mostSold?.totalQuantity || 0) + " Units Sold"} color="bg-orange-300" />
 

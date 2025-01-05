@@ -19,6 +19,7 @@ export const useAuth = create((set) => {
     const logOut = async () => {
         set({ user: null })
         localStorage.clear()
+        window.location.reload()
     }
 
     const fetchUser = async () => {
