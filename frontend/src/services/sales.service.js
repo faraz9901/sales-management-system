@@ -44,7 +44,7 @@ class SalesService {
     }
 
     async downLoadRecords(month) {
-        return request.get('/sales/download', { params: { month } }, { responseType: 'blob' })
+        return request.get(`/sales/download/${month}`, { responseType: 'blob' })
     }
 
     async downloadInvoice(number) {

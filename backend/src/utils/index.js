@@ -39,3 +39,13 @@ export const getDateAndTime = () => {
 }
 
 
+export const recordHeaders = [
+    { header: "Customer Name", key: "customerName", width: 15 },
+    { header: "Product", key: "product", width: 15 },
+    { header: "Quantity", key: "quantity", width: 15 },
+    { header: "Price", key: "price", width: 15 },
+    { header: "Category", key: "category", width: 15 },
+    { header: "Date", key: "date", width: 15 },
+    { header: "Invoice Number", key: "invoiceNumber", width: 15 }
+]
+

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import salesService from '../services/sales.service'
 import { formatToCurrencySystem, months } from '../services'
+import { useToaster } from '../services/toaster.service'
 import { Logs } from 'lucide-react'
 
 
@@ -16,8 +17,24 @@ const Card = ({ title, secondLine, thirdLine, color = "bg-base-100" }) => {
 
 export default function DashBoard() {
     const [stats, setStats] = useState(null)
-
+    const toast = useToaster(state => state.toast)
     const [month, setMonth] = useState(new Date().getMonth())
+
+    const downloadExcel = async () => {
+        try {
+            const response = await salesService.downLoadRecords(month)
+            const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${months[month]}.xlsx`;
+            link.click();
+            link.remove()
+        } catch (error) {
+            console.log(error)
+            toast.onError(error, 5000)
+        }
+    }
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -43,7 +60,7 @@ export default function DashBoard() {
 
                 <div className='flex items-center gap-3'>
 
-                    <span className='flex flex-col items-center cursor-pointer '>
+                    <span onClick={downloadExcel} className='flex flex-col items-center cursor-pointer '>
                         <img src='/excel.svg' className=' h-6'></img>
                         <small className='font-semibold text-gray-500'>Excel Report</small>
                     </span>

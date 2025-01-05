@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createSalesRecords, deleteRecord, getRecord, getSalesRecords, getStats, sendInvoice, sendLogs, updateRecord } from '../controllers/sales.controller.js'
+import { createSalesRecords, deleteRecord, downLoadRecords, getRecord, getSalesRecords, getStats, sendInvoice, sendLogs, updateRecord } from '../controllers/sales.controller.js'
 
 const verifyRoles = (roles) => (req, res, next) => {
     if (!roles.includes(req.user.role)) {

@@ -5,7 +5,8 @@ import * as url from 'url';
 import * as path from 'path';
 import * as fs from 'fs';
 import { createLog } from "../utils/createLogs.js";
-import { getDateAndTime } from "../utils/index.js";
+import { getDateAndTime, recordHeaders } from "../utils/index.js";
+import { createExcelFile } from "../utils/createExcelFile.js";
 
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -89,11 +90,14 @@ export const sendLogs = async (req, res) => {    // Download the log file
 
 export const downLoadRecords = async (req, res) => {
     try {
-        const month = req.params.month
+        const month = req?.params?.month || new Date().getMonth()
 
-        const sales = await Sales.find({ date: { $gte: new Date(new Date().getFullYear(), month, 1), $lt: new Date(new Date().getFullYear(), month + 1, 1) } })
+        const startDate = new Date(new Date().getFullYear(), month, 1)
+        const endDate = new Date(new Date().getFullYear(), month + 1, 0)
 
-        res.status(200).json({ success: true, content: sales })
+        const sales = await Sales.find({ date: { $gte: startDate, $lt: endDate } })
+
+        await createExcelFile(recordHeaders, sales, "records", res)
 
     } catch (error) {
         res.status(500).json({ success: false })
