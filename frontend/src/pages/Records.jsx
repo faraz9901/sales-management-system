@@ -6,7 +6,7 @@ export default function Records() {
     return (
         <div className="flex self-start  gap-3 flex-col">
 
-            <div className="bg-white flex justify-end items-center gap-7 h-14 text-gray-500 p-2   ">
+            <div className="bg-white flex justify-end items-center gap-7 h-11 text-gray-500 p-2   ">
 
                 <Link className="btn btn-sm rounded-full btn-error text-white" to="/add">
                     + Add Sale

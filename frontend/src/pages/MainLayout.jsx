@@ -1,11 +1,15 @@
 import { AlignJustify } from 'lucide-react'
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { NavLink, Route, Routes } from 'react-router-dom'
 
 import AddSales from './AddSales'
 import EditSales from './EditSales'
 import NotFound from './NotFound'
 import Records from './Records'
+
+const navClass = (isActive) => {
+    return "rounded p-3 " + (isActive ? "bg-white  text-black font-semibold" : " text-white")
+}
 
 export default function MainLayout() {
     return (
@@ -28,13 +32,26 @@ export default function MainLayout() {
             </div>
             <div className="drawer-side   text-white   bg-gray-700 ">
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                <ul className="menu  text-white  lg:w-80 p-4">
+                <ul className="flex flex-col gap-2  text-white  lg:w-60 p-4">
 
-                    <p className='font-bold text-2xl flex items-center gap-3 my-3'>
+                    <p className='font-bold text-2xl flex items-center gap-3 mt-3 mb-10'>
                         <img src="/logo.png" alt="Logo" className="w-10 bg-white rounded h-10 " />  Sales Tracker
                     </p>
 
 
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) => navClass(isActive)}
+                    >
+                        Records
+                    </NavLink>
+
+                    <NavLink
+                        to="/add"
+                        className={({ isActive }) => navClass(isActive)}
+                    >
+                        Add Sale
+                    </NavLink>
                 </ul>
             </div>
         </div>

@@ -8,10 +8,8 @@ import Login from './pages/Login'
 import MainLayout from './pages/MainLayout';
 
 function App() {
-
   const fetchUser = useAuth(state => state.fetchUser)
-  const user = useAuth(state => state.user)
-
+  const token = localStorage.getItem("token")
 
   useEffect(() => {
     if (localStorage.getItem("isAuthenticated")) {
@@ -23,8 +21,8 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
-          <Route path="*" element={user ? <MainLayout /> : <Navigate to="/login" />} />
+          <Route path="/login" element={!token ? <Login /> : <Navigate to="/" />} />
+          <Route path="*" element={token ? <MainLayout /> : <Navigate to="/login" />} />
         </Routes>
       </Router>
       <ToasterContainer />
