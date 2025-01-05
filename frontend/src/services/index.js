@@ -1,13 +1,15 @@
 import axios from 'axios'
 
 export const request = axios.create({
-    baseURL: "https://sales-management-system-server.onrender.com/api/v1/",
+    baseURL: "http://localhost:8000/api/v1/",
     headers: {
         Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
         'Content-Type': 'application/json',
     },
     withCredentials: true
 })
+
+export const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 export const getDate = (date) => {
     return new Date(date).toLocaleDateString('en-GB')

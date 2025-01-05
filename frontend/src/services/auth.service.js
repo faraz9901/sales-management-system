@@ -7,24 +7,18 @@ export const useAuth = create((set) => {
         try {
             const { data } = await request.post("/users/login", { email, password })
             localStorage.setItem("token", data.token)
-            set({ user: data.content })
-            return { data: data.content, error: null }
+            localStorage.setItem("isAuthenticated", JSON.stringify(true))
+            window.location.reload()
+            return { error: null }
         } catch (error) {
             set({ user: null })
-            return { data: null, error }
+            return { error }
         }
     }
 
     const logOut = async () => {
-        try {
-            await tryCatch(() => request.put("/users/logout"))
-            set({ user: null })
-        } catch (error) {
-            set({ user: null })
-        } finally {
-            localStorage.removeItem("token")
-            localStorage.removeItem("isAuthenticated")
-        }
+        set({ user: null })
+        localStorage.clear()
     }
 
     const fetchUser = async () => {

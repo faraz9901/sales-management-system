@@ -19,18 +19,10 @@ export default function Login() {
     const submit = async (e) => {
         e.preventDefault()
         if (loginData.email && loginData.password) {
-            const { data, error } = await login(loginData.email, loginData.password)
-
+            const { error } = await login(loginData.email, loginData.password)
             if (error) {
-                toast.onError(error, 5000)
+                return toast.onError(error, 5000)
             }
-
-            if (data) {
-                toast.onSuccess("Login Successful", 2000)
-                localStorage.setItem("isAuthenticated", JSON.stringify(true))
-                navigate("/")
-            }
-
         } else {
             toast.onError({ message: "Please enter valid email and password" }, 5000)
         }
