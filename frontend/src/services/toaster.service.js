@@ -22,7 +22,7 @@ export const useToaster = create((set) => {
         toaster: { show: false },
         toast: {
             onSuccess: (message, timeout) => setToaster('success', message, timeout),
-            onError: (error, timeout) => setToaster('error', error?.response?.data?.message || error.statusText || error.message, timeout),
+            onError: (error, timeout) => setToaster('error', error?.response?.data?.message || error?.response?.statusText || error.message, timeout),
             onInfo: (message, timeout) => setToaster('info', message, timeout),
         },
     }
