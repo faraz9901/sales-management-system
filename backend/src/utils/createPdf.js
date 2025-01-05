@@ -7,11 +7,16 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-export default function createPdf(details) {
+export default function createPdf(details, res) {
     try {
         const doc = new PDFDocumet({ size: "A4" });
 
-        doc.pipe(fs.createWriteStream(path.join(__dirname, "..", "..", "public", "invoices", `${details.invoiceNumber}.pdf`)));
+        // Pipe the document to the response stream
+        doc.pipe(res);
+
+        // Set response headers
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="invoice.pdf"');
 
         doc.font('Helvetica-Bold').fontSize(20).text("Sales Tracker", 50, 50);
 
@@ -25,7 +30,7 @@ export default function createPdf(details) {
 
         doc.font("Helvetica").fontSize(12).text(`
             Invoice No: ${details.invoiceNumber}
-            Date: ${details.date}`
+            Date: ${new Date(details.date).toLocaleDateString('en-GB')}`
             , 10, 100, { align: "right" })
 
 
