@@ -8,7 +8,7 @@ export const useAuth = create((set) => {
             const { data } = await request.post("/users/login", { email, password })
             localStorage.setItem("token", data.token)
             localStorage.setItem("isAuthenticated", JSON.stringify(true))
-            window.location.reload()
+            window.location.href = "/"
             return { error: null }
         } catch (error) {
             set({ user: null })
